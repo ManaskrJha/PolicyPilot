@@ -73,15 +73,26 @@ def log_expense(
 ) -> str:
     """Log a company expense after checking it against policy.
 
+    Apply these rules yourself before calling this tool, then pass in your own
+    determination:
+    - Meals: approved if under $75. Flag if $75 or more.
+    - Travel (flights, hotels, cabs): approved if under $1000. Flag if $1000 or more.
+    - Software & subscriptions: approved if under $200/month.
+    - Office supplies: always approved.
+    - Entertainment or alcohol: always flag, never approve automatically.
+    - Anything else, or anything ambiguous: flag for manual review.
+
     Args:
         description: What was purchased, in plain language.
         amount: Amount in US dollars.
         category: One of Meals, Travel, Software, Office Supplies, Entertainment, Other.
         policy_status: Your determination, either "approved" or "flagged", based on the
-            policy rules in this server's instructions.
+            policy rules above.
         vendor: Vendor or merchant name, if known.
-        flag_reason: If flagged, a short reason why. Leave blank if approved.
+        flag_reason: If flagged, a short reason why, citing the specific rule that was
+            crossed (e.g. "over the $75 meal limit"). Leave blank if approved.
     """
+
     if category not in CATEGORIES:
         category = "Other"
     if policy_status not in ("approved", "flagged"):
