@@ -6,6 +6,7 @@ import datetime
 from pathlib import Path
 
 from mcp.server.fastmcp import FastMCP
+from mcp.server.transport_security import TransportSecuritySettings
 from starlette.requests import Request
 from starlette.responses import HTMLResponse, RedirectResponse
 
@@ -39,7 +40,9 @@ mcp = FastMCP(
         + POLICY_TEXT
     ),
     stateless_http=True,
+    transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False),
 )
+
 
 
 def _load():
